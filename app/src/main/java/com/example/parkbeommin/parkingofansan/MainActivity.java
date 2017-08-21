@@ -81,6 +81,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     LatLng currentPosition;
     List<Marker> previous_marker = null;
+    int SCOPE = 500;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,11 +92,26 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         previous_marker = new ArrayList<Marker>();
 
-        Button button = (Button)findViewById(R.id.button);
+        final ArrayList<Integer> scope_array = new ArrayList<Integer>();
+        scope_array.add(SCOPE);
+        scope_array.add(2*SCOPE);
+        scope_array.add(3*SCOPE);
+        scope_array.add(4*SCOPE);
+        scope_array.add(5*SCOPE);
+        scope_array.add(6*SCOPE);
+        final Button button = (Button)findViewById(R.id.button);
+        button.setText("0.5KM 반경 내의 주차장 찾기");
+        final int[] i = {1};
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showPlaceInformation(currentPosition);
+                SCOPE = scope_array.get(i[0]);
+                button.setText(i[0] +"KM 반경 내의 주차장 찾기");
+                i[0]++;
+                if(i[0] >scope_array.size()){
+                    i[0] =0;
+                }
             }
         });
 
@@ -664,7 +680,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .listener(MainActivity.this)
                 .key("AIzaSyBxUtJhxAFUyCXpX6rz1mRBYFmdU7fmV2E")
                 .latlng(location.latitude, location.longitude)//현재 위치
-                .radius(5000) //x 미터 내에서 검색
+                .radius(SCOPE) //x 미터 내에서 검색
                 .type(PlaceType.PARKING) //어떤 위치를 표현할 건지 설정
                 .build()
                 .execute();
