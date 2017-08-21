@@ -20,7 +20,9 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -39,12 +41,20 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
+import noman.googleplaces.NRPlaces;
+import noman.googleplaces.Place;
+import noman.googleplaces.PlaceType;
+import noman.googleplaces.PlacesException;
+import noman.googleplaces.PlacesListener;
+
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener, PlacesListener {
 
 
     private GoogleApiClient mGoogleApiClient = null;
@@ -69,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             .setInterval(UPDATE_INTERVAL_MS)
             .setFastestInterval(FASTEST_UPDATE_INTERVAL_MS);
 
+    LatLng currentPosition;
+    List<Marker> previous_marker = null;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +88,16 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_main);
+
+        previous_marker = new ArrayList<Marker>();
+
+        Button button = (Button)findViewById(R.id.button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPlaceInformation(currentPosition);
+            }
+        });
 
         Log.d(TAG, "onCreate");
         mActivity = this;
@@ -216,6 +238,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onLocationChanged(Location location) {
 
+        currentPosition
+                = new LatLng( location.getLatitude(), location.getLongitude());
 
         Log.d(TAG, "onLocationChanged : ");
 
@@ -585,4 +609,64 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    @Override
+    public void onPlacesFailure(PlacesException e) {
+
+    }
+
+    @Override
+    public void onPlacesStart() {
+
+    }
+
+    @Override
+    public void onPlacesSuccess(final List<Place> places) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                for (noman.googleplaces.Place place : places) {
+
+                    LatLng latLng
+                            = new LatLng(place.getLatitude()
+                            , place.getLongitude());
+
+                    MarkerOptions markerOptions = new MarkerOptions();
+                    markerOptions.position(latLng);
+                    markerOptions.title(place.getName());
+                    markerOptions.snippet(place.getVicinity());
+                    Marker item = mGoogleMap.addMarker(markerOptions);
+                    previous_marker.add(item);
+
+                }
+
+                //중복 마커 제거
+                HashSet<Marker> hashSet = new HashSet<Marker>();
+                hashSet.addAll(previous_marker);
+                previous_marker.clear();
+                previous_marker.addAll(hashSet);
+
+            }
+        });
+    }
+
+    @Override
+    public void onPlacesFinished() {
+
+    }
+    public void showPlaceInformation(LatLng location)
+    {
+        mGoogleMap.clear();//지도 클리어
+
+        if (previous_marker != null)
+            previous_marker.clear();//지역정보 마커 클리어
+
+        new NRPlaces.Builder()
+                .listener(MainActivity.this)
+                .key("AIzaSyBxUtJhxAFUyCXpX6rz1mRBYFmdU7fmV2E")
+                .latlng(location.latitude, location.longitude)//현재 위치
+                .radius(5000) //x 미터 내에서 검색
+                .type(PlaceType.PARKING) //어떤 위치를 표현할 건지 설정
+                .build()
+                .execute();
+    }
 }
