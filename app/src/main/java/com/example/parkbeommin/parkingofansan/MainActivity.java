@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     Animation moving_car1, moving_car2, moving_car3, moving_car4, moving_car5, moving_car6, moving_car6_1;
     ImageView car;
+    private long lastTimeBackPressed;
 
     private GoogleApiClient mGoogleApiClient = null;
     private GoogleMap mGoogleMap = null;
@@ -775,5 +776,13 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         ActionBar.LayoutParams params = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
         actionBar.setCustomView(view, params);
 
+    } public void onBackPressed() {
+
+        if (System.currentTimeMillis() - lastTimeBackPressed < 1500) {
+            System.exit(0);
+            return;
+        }
+        Toast.makeText(this, "뒤로 버튼을 한번 더 누르면 종료됩니다", Toast.LENGTH_SHORT).show();
+        lastTimeBackPressed = System.currentTimeMillis();
     }
 }
