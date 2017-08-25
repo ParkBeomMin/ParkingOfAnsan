@@ -6,23 +6,33 @@ import android.app.FragmentManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -56,6 +66,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         GoogleApiClient.OnConnectionFailedListener,
         LocationListener, PlacesListener {
 
+    Animation moving_car1, moving_car2, moving_car3, moving_car4, moving_car5, moving_car6, moving_car6_1;
+    ImageView car;
 
     private GoogleApiClient mGoogleApiClient = null;
     private GoogleMap mGoogleMap = null;
@@ -82,6 +94,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     LatLng currentPosition;
     List<Marker> previous_marker = null;
     int SCOPE = 500;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,32 +102,80 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
                 WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         setContentView(R.layout.activity_main);
-
+        setActionBar();
         previous_marker = new ArrayList<Marker>();
 
+        moving_car1 = AnimationUtils.loadAnimation(this, R.anim.moving);
+        moving_car2 = AnimationUtils.loadAnimation(this, R.anim.moving2);
+        moving_car3 = AnimationUtils.loadAnimation(this, R.anim.moving3);
+        moving_car4 = AnimationUtils.loadAnimation(this, R.anim.moving4);
+        moving_car5 = AnimationUtils.loadAnimation(this, R.anim.moving5);
+        moving_car6 = AnimationUtils.loadAnimation(this, R.anim.moving6);
+        moving_car6_1 = AnimationUtils.loadAnimation(this, R.anim.rotation);
         final ArrayList<Integer> scope_array = new ArrayList<Integer>();
-        scope_array.add(SCOPE);
-        scope_array.add(2*SCOPE);
-        scope_array.add(3*SCOPE);
-        scope_array.add(4*SCOPE);
-        scope_array.add(5*SCOPE);
-        scope_array.add(6*SCOPE);
-        final Button button = (Button)findViewById(R.id.button);
-        button.setText("0.5KM 반경 내의 주차장 찾기");
+        scope_array.add(500);
+        scope_array.add(1000);
+        scope_array.add(1500);
+        scope_array.add(2000);
+        scope_array.add(2500);
+        scope_array.add(3000);
+        final Button button = (Button) findViewById(R.id.button);
+        button.setText("1000M 반경 내의 주차장 찾기");
         final int[] i = {1};
+        final int click[] = {0};
+
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showPlaceInformation(currentPosition);
                 SCOPE = scope_array.get(i[0]);
-                button.setText(i[0] +"KM 반경 내의 주차장 찾기");
-                i[0]++;
-                if(i[0] >scope_array.size()){
-                    i[0] =0;
+                int text = SCOPE + 500;
+                if (text > 3000) {
+                    text = 500;
                 }
+                button.setText(text + "M 반경 내의 주차장 찾기");
+                i[0]++;
+                if (i[0] >= scope_array.size()) {
+                    i[0] = 0;
+                }
+                if (click[0] == 0) {
+                    car.startAnimation(moving_car1);
+                } else if (click[0] == 1) {
+                    car.startAnimation(moving_car2);
+
+                } else if (click[0] == 2) {
+                    car.startAnimation(moving_car3);
+
+                } else if (click[0] == 3) {
+                    car.startAnimation(moving_car4);
+
+                } else if (click[0] == 4) {
+                    car.startAnimation(moving_car5);
+
+                } else if (click[0] == 5) {
+                    car.startAnimation(moving_car6);
+//                    car.startAnimation(moving_car6_1);
+
+                }
+                Log.d("BEOM1", "SCOPE : " + SCOPE);
+                click[0]++;
+                if(click[0]==6){
+                    click[0] = 0;
+                }
+//                if (click[0] == 5) {
+//                    car.startAnimation(moving_car6);
+//                    car.startAnimation(moving_car6_1);
+//                    click[0] = 0;
+//                }
+                                showPlaceInformation(currentPosition);
+
             }
         });
 
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("공지사항")
+                .setMessage("Google 길찾기 기능이 현재 서비스되지 않습니다.\n 대중교통 길찾기 기능은 사용가능합니다.")
+                .setPositiveButton("확인", null)
+                .show();
         Log.d(TAG, "onCreate");
         mActivity = this;
 
@@ -126,9 +187,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .build();
 
         FragmentManager fragmentManager = getFragmentManager();
-        MapFragment mapFragment = (MapFragment)fragmentManager
+        MapFragment mapFragment = (MapFragment) fragmentManager
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
+
+
+
+
+
+
+
+
+
     }
 
     @Override
@@ -161,7 +232,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             Log.d(TAG, "startLocationUpdates : call showDialogForLocationServiceSetting");
             showDialogForLocationServiceSetting();
-        }else {
+        } else {
 
             if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                     && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -179,14 +250,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
 
-
     private void stopLocationUpdates() {
 
-        Log.d(TAG,"stopLocationUpdates : LocationServices.FusedLocationApi.removeLocationUpdates");
+        Log.d(TAG, "stopLocationUpdates : LocationServices.FusedLocationApi.removeLocationUpdates");
         LocationServices.FusedLocationApi.removeLocationUpdates(mGoogleApiClient, this);
         mRequestingLocationUpdates = false;
     }
-
 
 
     @Override
@@ -204,12 +273,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         //mGoogleMap.getUiSettings().setZoomControlsEnabled(false);
         mGoogleMap.getUiSettings().setMyLocationButtonEnabled(true);
         mGoogleMap.animateCamera(CameraUpdateFactory.zoomTo(15));
-        mGoogleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener(){
+        mGoogleMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
 
             @Override
             public boolean onMyLocationButtonClick() {
 
-                Log.d( TAG, "onMyLocationButtonClick : 위치에 따른 카메라 이동 활성화");
+                Log.d(TAG, "onMyLocationButtonClick : 위치에 따른 카메라 이동 활성화");
                 mMoveMapByAPI = true;
                 return true;
             }
@@ -219,7 +288,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onMapClick(LatLng latLng) {
 
-                Log.d( TAG, "onMapClick :");
+                Log.d(TAG, "onMapClick :");
             }
         });
 
@@ -228,7 +297,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onCameraMoveStarted(int i) {
 
-                if (mMoveMapByUser == true && mRequestingLocationUpdates){
+                if (mMoveMapByUser == true && mRequestingLocationUpdates) {
 
                     Log.d(TAG, "onCameraMove : 위치에 따른 카메라 이동 비활성화");
                     mMoveMapByAPI = false;
@@ -255,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onLocationChanged(Location location) {
 
         currentPosition
-                = new LatLng( location.getLatitude(), location.getLongitude());
+                = new LatLng(location.getLatitude(), location.getLongitude());
 
         Log.d(TAG, "onLocationChanged : ");
 
@@ -273,7 +342,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onStart() {
 
-        if(mGoogleApiClient != null && mGoogleApiClient.isConnected() == false){
+        if (mGoogleApiClient != null && mGoogleApiClient.isConnected() == false) {
 
             Log.d(TAG, "onStart: mGoogleApiClient connect");
             mGoogleApiClient.connect();
@@ -291,7 +360,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             stopLocationUpdates();
         }
 
-        if ( mGoogleApiClient.isConnected()) {
+        if (mGoogleApiClient.isConnected()) {
 
             Log.d(TAG, "onStop : mGoogleApiClient disconnect");
             mGoogleApiClient.disconnect();
@@ -305,7 +374,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onConnected(Bundle connectionHint) {
 
 
-        if ( mRequestingLocationUpdates == false ) {
+        if (mRequestingLocationUpdates == false) {
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 
@@ -326,7 +395,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                     mGoogleMap.setMyLocationEnabled(true);
                 }
 
-            }else{
+            } else {
 
                 Log.d(TAG, "onConnected : call startLocationUpdates");
                 startLocationUpdates();
@@ -423,10 +492,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         currentMarker = mGoogleMap.addMarker(markerOptions);
 
 
-        if ( mMoveMapByAPI ) {
+        if (mMoveMapByAPI) {
 
-            Log.d( TAG, "setCurrentLocation :  mGoogleMap moveCamera "
-                    + location.getLatitude() + " " + location.getLongitude() ) ;
+            Log.d(TAG, "setCurrentLocation :  mGoogleMap moveCamera "
+                    + location.getLatitude() + " " + location.getLongitude());
             // CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(currentLatLng, 15);
             CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLng(currentLatLng);
             mGoogleMap.moveCamera(cameraUpdate);
@@ -484,7 +553,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             Log.d(TAG, "checkPermissions : 퍼미션 가지고 있음");
 
 
-            if ( mGoogleApiClient.isConnected() == false) {
+            if (mGoogleApiClient.isConnected() == false) {
 
                 Log.d(TAG, "checkPermissions : 퍼미션 가지고 있음");
                 mGoogleApiClient.connect();
@@ -505,12 +574,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (permissionAccepted) {
 
 
-                if ( mGoogleApiClient.isConnected() == false) {
+                if (mGoogleApiClient.isConnected() == false) {
 
                     Log.d(TAG, "onRequestPermissionsResult : mGoogleApiClient connect");
                     mGoogleApiClient.connect();
                 }
-
 
 
             } else {
@@ -612,9 +680,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                         Log.d(TAG, "onActivityResult : 퍼미션 가지고 있음");
 
 
-                        if ( mGoogleApiClient.isConnected() == false ) {
+                        if (mGoogleApiClient.isConnected() == false) {
 
-                            Log.d( TAG, "onActivityResult : mGoogleApiClient connect ");
+                            Log.d(TAG, "onActivityResult : mGoogleApiClient connect ");
                             mGoogleApiClient.connect();
                         }
                         return;
@@ -669,8 +737,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onPlacesFinished() {
 
     }
-    public void showPlaceInformation(LatLng location)
-    {
+
+    public void showPlaceInformation(LatLng location) {
         mGoogleMap.clear();//지도 클리어
 
         if (previous_marker != null)
@@ -684,5 +752,28 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .type(PlaceType.PARKING) //어떤 위치를 표현할 건지 설정
                 .build()
                 .execute();
+        Log.d("BEOM1", "SCOPE2 : " + SCOPE);
+    }
+
+
+    void setActionBar() {
+        ActionBar actionBar = getSupportActionBar();
+
+        actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(false);            //액션바 아이콘을 업 네비게이션 형태로 표시합니다.
+        actionBar.setDisplayShowTitleEnabled(false);        //액션바에 표시되는 제목의 표시유무를 설정합니다.
+        actionBar.setDisplayShowHomeEnabled(false);            //홈 아이콘을 숨김처리합니다.
+
+        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.White)));
+
+        View view = getLayoutInflater().inflate(R.layout.my_action_bar, null);
+        car = (ImageView) view.findViewById(R.id.moving_car);
+        actionBar.setCustomView(view);
+
+        Toolbar parent = (Toolbar) view.getParent();
+        parent.setContentInsetsAbsolute(0, 0);
+        ActionBar.LayoutParams params = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
+        actionBar.setCustomView(view, params);
+
     }
 }
