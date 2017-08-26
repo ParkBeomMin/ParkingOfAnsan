@@ -1,4 +1,4 @@
-package com.example.parkbeommin.parkingofansan;
+package com.alpa.parkbeommin.parkingofansan;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
