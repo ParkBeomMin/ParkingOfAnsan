@@ -1,4 +1,4 @@
-package com.example.parkbeommin.parkingofansan;
+package com.alpa.parkbeommin.parkingofansan;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -13,8 +13,6 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
-import android.os.Handler;
-import android.os.Message;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -25,13 +23,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -128,6 +124,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+//                showPlaceInformation(currentPosition);
+
                 SCOPE = scope_array.get(i[0]);
                 int text = SCOPE + 500;
                 if (text > 3000) {
@@ -167,7 +165,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 //                    car.startAnimation(moving_car6_1);
 //                    click[0] = 0;
 //                }
-                                showPlaceInformation(currentPosition);
+                showPlaceInformation(currentPosition);
 
             }
         });
@@ -747,7 +745,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         new NRPlaces.Builder()
                 .listener(MainActivity.this)
-                .key("AIzaSyBxUtJhxAFUyCXpX6rz1mRBYFmdU7fmV2E")
+                .key("AIzaSyBxUtJhxAFUyCXpX6rz1mRBYFmdU7fmV2E-0")
                 .latlng(location.latitude, location.longitude)//현재 위치
                 .radius(SCOPE) //x 미터 내에서 검색
                 .type(PlaceType.PARKING) //어떤 위치를 표현할 건지 설정

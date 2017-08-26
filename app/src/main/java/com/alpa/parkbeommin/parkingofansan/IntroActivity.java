@@ -1,4 +1,4 @@
-package com.example.parkbeommin.parkingofansan;
+package com.alpa.parkbeommin.parkingofansan;
 
 import android.content.Intent;
 import android.os.Handler;

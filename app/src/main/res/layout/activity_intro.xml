@@ -4,172 +4,186 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/White"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context="com.example.parkbeommin.parkingofansan.IntroActivity">
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-    <TextView
-        android:textColor="@color/Key"
-        android:id="@+id/start_P"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="P"
-        android:textSize="50sp"
-        android:textStyle="bold" />
+    tools:context="com.alpa.parkbeommin.parkingofansan.IntroActivity">
 
-    <TextView
-        android:id="@+id/start_A"
-        android:textColor="@color/Black"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="a"
-        android:textSize="50sp" />
-
-    <TextView
-        android:id="@+id/start_R"
-        android:textColor="@color/Black"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="r"
-        android:textSize="50sp" />
-
-    <TextView
-
-        android:id="@+id/start_K"
-        android:textColor="@color/Black"
-
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="k"
-        android:textSize="50sp" />
-
-    <TextView
-        android:id="@+id/start_I"
-        android:textColor="@color/Black"
-
-        android:layout_width="wrap_content"
-
-        android:layout_height="wrap_content"
-        android:text="i"
-        android:textSize="50sp" />
-
-    <TextView
-        android:id="@+id/start_N"
-        android:textColor="@color/Black"
-
-        android:layout_width="wrap_content"
-
-        android:layout_height="wrap_content"
-        android:text="n"
-        android:textSize="50sp" />
-
-    <TextView
-        android:id="@+id/start_G"
-
-        android:layout_width="wrap_content"
-        android:textColor="@color/Black"
-
-        android:layout_height="wrap_content"
-        android:text="g"
-        android:textSize="50sp" />
-</LinearLayout>
-
-<LinearLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-    <TextView
-        android:textColor="@color/Key"
-
-        android:id="@+id/start_O"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="O"
-        android:textSize="50sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/start_F"
-
-        android:layout_width="wrap_content"
-        android:textColor="@color/Black"
-
-        android:layout_height="wrap_content"
-        android:text="f"
-        android:textSize="50sp" />
-
-</LinearLayout>
     <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-        <TextView
-            android:textColor="@color/Key"
+        android:layout_height="wrap_content"
+        android:background="@color/White">
 
+        <TextView
+            android:id="@+id/start_P"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="P"
+            android:textColor="@color/Key"
+            android:textSize="50sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/start_A"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="a"
+            android:textColor="@color/Black"
+            android:textSize="50sp" />
+
+        <TextView
+            android:id="@+id/start_R"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:text="r"
+            android:textColor="@color/Black"
+            android:textSize="50sp" />
+
+        <TextView
+
+            android:id="@+id/start_K"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+            android:text="k"
+            android:textColor="@color/Black"
+            android:textSize="50sp" />
+
+        <TextView
+            android:id="@+id/start_I"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+
+            android:text="i"
+            android:textColor="@color/Black"
+            android:textSize="50sp" />
+
+        <TextView
+            android:id="@+id/start_N"
+            android:layout_width="wrap_content"
+
+            android:layout_height="wrap_content"
+
+            android:text="n"
+            android:textColor="@color/Black"
+            android:textSize="50sp" />
+
+        <TextView
+            android:id="@+id/start_G"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="g"
+            android:textColor="@color/Black"
+            android:textSize="50sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/White">
+
+        <TextView
+            android:id="@+id/start_O"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="O"
+            android:textColor="@color/Key"
+            android:textSize="50sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/start_F"
+
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:text="f"
+            android:textColor="@color/Black"
+            android:textSize="50sp" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/White">
+
+        <TextView
             android:id="@+id/start_A2"
+
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="A"
+            android:textColor="@color/Key"
             android:textSize="50sp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/start_N2"
             android:layout_width="wrap_content"
-            android:textColor="@color/Black"
-
             android:layout_height="wrap_content"
+
             android:text="n"
+            android:textColor="@color/Black"
             android:textSize="50sp" />
 
         <TextView
             android:id="@+id/start_S"
-            android:textColor="@color/Black"
-
             android:layout_width="wrap_content"
 
             android:layout_height="wrap_content"
+
             android:text="s"
+            android:textColor="@color/Black"
             android:textSize="50sp" />
 
         <TextView
             android:id="@+id/start_A3"
-            android:textColor="@color/Black"
-
             android:layout_width="wrap_content"
 
             android:layout_height="wrap_content"
+
             android:text="a"
+            android:textColor="@color/Black"
             android:textSize="50sp" />
 
         <TextView
             android:id="@+id/start_N3"
 
             android:layout_width="wrap_content"
-            android:textColor="@color/Black"
-
             android:layout_height="wrap_content"
+
             android:text="n"
+            android:textColor="@color/Black"
             android:textSize="50sp" />
 
     </LinearLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
+
+
+        <ImageView
+            android:layout_marginRight="20dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/parking" />
         <ImageView
             android:id="@+id/car"
-android:layout_centerInParent="true"
-android:layout_alignParentRight="true"
-            android:layout_marginRight="20dp"
-            android:src="@drawable/car"
             android:layout_width="80dp"
-            android:layout_height="wrap_content" />
-        <ImageView
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:src="@drawable/parking"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_centerInParent="true"
+            android:layout_marginRight="20dp"
+            android:src="@drawable/car" />
     </RelativeLayout>
 
 
