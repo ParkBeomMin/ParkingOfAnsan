@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.alpa.parkbeommin.parkingofansan"
-    android:versionCode="2"
-    android:versionName="1.1">
+    package="com.alpa_.parkbeommin.parkingofansan"
+    android:versionCode="4"
+    android:versionName="1.3">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
-        android:debuggable="false"
         android:allowBackup="false"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
@@ -18,10 +17,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAhl4ZHWWZXNku221gF3-MTjzHGPTFp3Ps" />
 
-        <activity android:name="com.alpa.parkbeommin.parkingofansan.MainActivity">
+        <activity android:name="com.alpa_.parkbeommin.parkingofansan.MainActivity">
 
         </activity>
-        <activity android:name="com.alpa.parkbeommin.parkingofansan.IntroActivity"
+        <activity android:name="com.alpa_.parkbeommin.parkingofansan.IntroActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"><intent-filter>
             <action android:name="android.intent.action.MAIN" />
 

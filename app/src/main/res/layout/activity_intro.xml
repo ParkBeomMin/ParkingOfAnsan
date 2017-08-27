@@ -7,7 +7,7 @@
     android:background="@color/White"
     android:gravity="center"
     android:orientation="vertical"
-    tools:context="com.alpa.parkbeommin.parkingofansan.IntroActivity">
+    tools:context="com.alpa_.parkbeommin.parkingofansan.IntroActivity">
 
     <LinearLayout
         android:layout_width="wrap_content"

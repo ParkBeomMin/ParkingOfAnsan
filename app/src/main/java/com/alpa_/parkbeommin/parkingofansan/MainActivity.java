@@ -1,4 +1,4 @@
-package com.alpa.parkbeommin.parkingofansan;
+package com.alpa_.parkbeommin.parkingofansan;
 
 import android.Manifest;
 import android.annotation.TargetApi;
@@ -13,6 +13,8 @@ import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -90,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     LatLng currentPosition;
     List<Marker> previous_marker = null;
-    int SCOPE = 500;
+    int SCOPE;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,11 +129,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 //                showPlaceInformation(currentPosition);
 
                 SCOPE = scope_array.get(i[0]);
-                int text = SCOPE + 500;
-                if (text > 3000) {
-                    text = 500;
+                final int[] text = {SCOPE + 500};
+                if (text[0] > 3000) {
+                    text[0] = 500;
                 }
-                button.setText(text + "M 반경 내의 주차장 찾기");
+//                button.setText(text + "M 반경 내의 주차장 찾기");
                 i[0]++;
                 if (i[0] >= scope_array.size()) {
                     i[0] = 0;
@@ -152,12 +154,11 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
                 } else if (click[0] == 5) {
                     car.startAnimation(moving_car6);
-//                    car.startAnimation(moving_car6_1);
 
                 }
                 Log.d("BEOM1", "SCOPE : " + SCOPE);
                 click[0]++;
-                if(click[0]==6){
+                if (click[0] == 6) {
                     click[0] = 0;
                 }
 //                if (click[0] == 5) {
@@ -165,7 +166,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 //                    car.startAnimation(moving_car6_1);
 //                    click[0] = 0;
 //                }
+
+                button.setEnabled(false);
+                button.setText("위치정보 찾는 중");
                 showPlaceInformation(currentPosition);
+                Handler handler = new Handler() {
+                    public void handleMessage(Message msg) {
+                        super.handleMessage(msg);
+                        button.setEnabled(true);
+                        button.setText(text[0] + "M 반경 내의 주차장 찾기");
+
+                    }
+                };
+                handler.sendEmptyMessageDelayed(0, 3000);
+
 
             }
         });
@@ -189,14 +203,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         MapFragment mapFragment = (MapFragment) fragmentManager
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
-
-
-
-
-
-
-
 
 
     }
@@ -507,8 +513,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         mMoveMapByUser = false;
 
 
-        //디폴트 위치, Seoul
-        LatLng DEFAULT_LOCATION = new LatLng(37.56, 126.97);
+        //디폴트 위치, Seoul 37.56, 126.97
+        // Ansan 37.3218778, 126.8308848
+        LatLng DEFAULT_LOCATION = new LatLng(37.3218778, 126.8308848);
         String markerTitle = "위치정보 가져올 수 없음";
         String markerSnippet = "위치 퍼미션과 GPS 활성 요부 확인하세요";
 
@@ -745,7 +752,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         new NRPlaces.Builder()
                 .listener(MainActivity.this)
-                .key("AIzaSyBxUtJhxAFUyCXpX6rz1mRBYFmdU7fmV2E-0")
+                .key("AIzaSyBxUtJhxAFUyCXpX6rz1mRBYFmdU7fmV2E")
                 .latlng(location.latitude, location.longitude)//현재 위치
                 .radius(SCOPE) //x 미터 내에서 검색
                 .type(PlaceType.PARKING) //어떤 위치를 표현할 건지 설정
@@ -774,7 +781,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         ActionBar.LayoutParams params = new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT);
         actionBar.setCustomView(view, params);
 
-    } public void onBackPressed() {
+    }
+
+    public void onBackPressed() {
 
         if (System.currentTimeMillis() - lastTimeBackPressed < 1500) {
             System.exit(0);
