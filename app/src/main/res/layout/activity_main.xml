@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.alpa.parkbeommin.parkingofansan.MainActivity">
+    tools:context="com.alpa_.parkbeommin.parkingofansan.MainActivity">
 <fragment
     android:id="@+id/map"
     android:layout_width="match_parent"

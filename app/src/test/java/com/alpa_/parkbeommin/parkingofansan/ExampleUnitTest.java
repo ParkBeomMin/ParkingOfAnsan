@@ -1,4 +1,4 @@
-package com.alpa.parkbeommin.parkingofansan;
+package com.alpa_.parkbeommin.parkingofansan;
 
 import org.junit.Test;
 
