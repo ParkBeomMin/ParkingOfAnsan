@@ -6,6 +6,8 @@
 
 ## Screenshots
 
+<img src="./screenShot/splash.png" width=250> <img src="./screenShot/permission.jpeg" width=250> <img src="./screenShot/findParking.jpeg" width=250>
+
 ## Used Library & API
 
 - Google Map API
